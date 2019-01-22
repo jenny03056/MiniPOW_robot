@@ -25,7 +25,7 @@ Javascipt example code :
 ==============================================================================
 MiniPOW.set_offset(3, -1, 4)
 
-MiniPOW.motion(MiniPOW.snum.Middle, MiniPOW.dnum.Stop)
+MiniPOW.motion(MiniPOW.dnum.Stop)
 
 basic.forever(function () {
 	
