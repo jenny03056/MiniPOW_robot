@@ -41,11 +41,11 @@ namespace MiniPOW {
     let run_s = 0
    
     export enum dnum {
-        S = 0,
-        F = 1,
-        B = 2,
-        L = 3,
-        R = 4,
+        Stop = 0,
+        Forward = 1,
+        Backward = 2,
+        Left = 3,
+        Right = 4,
         Say_hi = 5,
     }
         
@@ -326,20 +326,20 @@ basic.showLeds(`
     //% blockGap=1 weight=80 
   export function motion(direction: dnum): void {
         
-       if (direction == dnum.S) {
-        s90(3,90)
-        s90(1,90)
+      if (direction == dnum.Stop) {
         s90(0,90)
-          } else if (direction == dnum.F ) {
+        s90(1,90)
+        s90(2,90)
+          } else if (direction == dnum.Forward ) {
         m_step = h.length
         mrun(h,i,k,h,3)  
-         } else if (direction == dnum.B ) {
+         } else if (direction == dnum.Backward ) {
         m_step = e.length
-        mrun(e,f,g,h,3)  
-         } else if (direction == dnum.R ) {
+        mrun(e,f,g,f,3)  
+         } else if (direction == dnum.Right ) {
         m_step = o.length
         mrun(o,p,q,q,3)  
-         } else if (direction == dnum.L ) {
+         } else if (direction == dnum.Left ) {
         m_step = l.length
         mrun(l,m,n,n,3)  
         } else if (direction == dnum.Say_hi ) {
