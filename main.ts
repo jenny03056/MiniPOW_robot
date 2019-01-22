@@ -1,5 +1,6 @@
 // Using MiniPOW to control the MiniPOW Robot (Shiun)
-// Copyright (c) Mason E&D. All rights reserved. No commercial use
+// Copyright (c) 2019 Mason E&D. Copy-right All Rights Reserved. No commercial use．　
+// FB link : https://www.facebook.com/mason.chen.1420
 //% weight=12 color=#ff8533 icon="\uf2d6" block="MiniPOW"
 namespace MiniPOW {
         
@@ -7,7 +8,7 @@ namespace MiniPOW {
     let b = 0
     let c = 0
     let d = [0,0,0]
-    let f = [-34, -13, -4, -13, -34, -55, -64, -55, -34, 180]
+    let f = [-24, -3, 6, -3, -24, -45, -54, -45, -24, 180]   
     let g = [-8, -14, -27, -42, -48, -42, -28, -14, -8, 180]
     let i = [16, 37, 46, 37, 16, -5, -14, -5, 16, 180]
     let k = [-8, -2, 12, 26, 32, 26, 13, -2, -8, 180]
@@ -39,16 +40,12 @@ namespace MiniPOW {
     let s0 = ""
     let run_s = 0
    
-    export enum snum {
-        Fast = 1,
-    }
-
     export enum dnum {
-        Stop = 0,
-        Forward = 1,
-        Backward = 2,
-        Left = 3,
-        Right = 4,
+        S = 0,
+        F = 1,
+        B = 2,
+        L = 3,
+        R = 4,
         Say_hi = 5,
     }
         
@@ -325,28 +322,24 @@ basic.showLeds(`
     /**
      * Shiun Robot basic motion extension
      */
-    //% blockId="motion" block="Default motion - |Speed %speed|Motion %direction"
+    //% blockId="motion" block="Default motion - |Motion %direction"
     //% blockGap=1 weight=80 
-  export function motion(speed: snum, direction: dnum): void {
+  export function motion(direction: dnum): void {
         
-        if (speed == snum.Fast) {
-          count = 10;
-        }
-
-       if (direction == dnum.Stop) {
+       if (direction == dnum.S) {
         s90(3,90)
         s90(1,90)
         s90(0,90)
-          } else if (direction == dnum.Forward ) {
+          } else if (direction == dnum.F ) {
         m_step = h.length
         mrun(h,i,k,h,3)  
-         } else if (direction == dnum.Backward ) {
+         } else if (direction == dnum.B ) {
         m_step = e.length
         mrun(e,f,g,h,3)  
-         } else if (direction == dnum.Right ) {
+         } else if (direction == dnum.R ) {
         m_step = o.length
         mrun(o,p,q,q,3)  
-         } else if (direction == dnum.Left ) {
+         } else if (direction == dnum.L ) {
         m_step = l.length
         mrun(l,m,n,n,3)  
         } else if (direction == dnum.Say_hi ) {
