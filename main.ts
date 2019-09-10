@@ -1,7 +1,7 @@
 // Using MiniPOW to control the MiniPOW Robot (Shiun)
 // Copyright (c) 2019 Mason E&D. Copy-right All Rights Reserved. No commercial use．　
 // FB link : https://www.facebook.com/mason.chen.1420
-//% weight=12 color=#ff8533 icon="\uf2d6" block="MiniPOW"
+//% weight=12 color=#ff8533 icon="\uf2d6" block="Q-ter"
 namespace MiniPOW {
         
     let a = 0
@@ -40,6 +40,12 @@ namespace MiniPOW {
     let s0 = ""
     let run_s = 0
    
+    export enum snum {
+        Middle = 0,
+        Fast = 1,
+        Slow = 2,
+    }
+
     export enum dnum {
         Stop = 0,
         Forward = 1,
@@ -69,137 +75,122 @@ namespace MiniPOW {
         }
     }
       
+     /**   
+     * Motion Editor block for using editor to control 
+      */
+    //% blockId="motion editor" block="For motion editor -|Receive data %r_data"
+    //% blockGap=1 weight=9 
+     export function motion_editor(r_data: string): void { 
+    s0 = ""
+    s1 = ""
+    s2 = ""
+    s3 = ""
+    time = ""
+    data_cnt = 0
+    for (let index = 0; index <= r_data.length - 1; index++) {
+        if (r_data.charAt(index).compare(",") == 0) {
+            data_cnt += 1
+        } else {
+            if (data_cnt == 0) {
+                s0 = "" + s0 + r_data.charAt(index)
+            }
+            if (data_cnt == 1) {
+                s1 = "" + s1 + r_data.charAt(index)
+            }
+            if (data_cnt == 2) {
+                s2 = "" + s2 + r_data.charAt(index)
+            }
+            if (data_cnt == 3) {
+                s3 = "" + s3 + r_data.charAt(index)
+            }
+            if (data_cnt == 4) {
+                time = "" + time + r_data.charAt(index)
+            }
+        }
+    }
+    pins.servoWritePin(AnalogPin.P0, parseFloat(s0)+ d[0])
+    basic.pause(parseFloat(time) / 4)
+    pins.servoWritePin(AnalogPin.P1, parseFloat(s1)+ d[1])
+    basic.pause(parseFloat(time) / 4)
+    pins.servoWritePin(AnalogPin.P2, parseFloat(s2)+ d[2])
+    basic.pause(parseFloat(time) / 4)
+}
   function mrun(aa: number[], bb: number[],cc: number[],dd: number[],ll: number): void {
       if (run_s == 0) {
         run_s = 1        
-                    c = aa[0] + 90+Math.idiv(aa[1] , 2)
-                    b = aa[0] + 90+bb[0]+Math.idiv((bb[1]-bb[0]) , 2)
-                    a = aa[0] + 90+cc[0]+Math.idiv((cc[1]-cc[0]) , 2)
+        for (let i = 0; i < ll; i++) {
+                for (let il = 0; il <= count - 1; il++) {
+                    c = aa[0] + 90+Math.idiv(aa[1] * (il + 1) , count)
+                    b = aa[0] + 90+bb[0]+Math.idiv((bb[1]-bb[0]) * (il + 1) , count)
+                    a = aa[0] + 90+cc[0]+Math.idiv((cc[1]-cc[0]) * (il + 1) , count)
                     s90(3,c)
                     s90(1,b)
                     s90(0,a)
-                    y = aa[0] + 90+dd[0]+Math.idiv(dd[1] , count)
-                   basic.pause(50)
-                    c = aa[0] + 90+Math.idiv(aa[1] * 2 , 2)
-                    b = aa[0] + 90+bb[0]+Math.idiv((bb[1]-bb[0]) * 2 , 2)
-                    a = aa[0] + 90+cc[0]+Math.idiv((cc[1]-cc[0]) * 2 , 2)
-                    s90(3,c)
-                    s90(1,b)
-                    s90(0,a)
-                    y = aa[0] + 90+dd[0]+Math.idiv(dd[1] * 2 , count)
-                   basic.pause(50)
+                    y = aa[0] + 90+dd[0]+Math.idiv(dd[1] * (il + 1) , count)
+                   basic.pause(10)
+                }
             for (let ml = 1; ml <= m_step - 3; ml++) {
+                for (let il = 0; il <= count - 1; il++) {
                     tmp_cnt = ml + 1
-                    c = aa[0] + 90+aa[ml] + Math.idiv((aa[tmp_cnt] - aa[ml]) , 2)
-                    b = aa[0] + 90+bb[ml] + Math.idiv((bb[tmp_cnt] - bb[ml]) , 2)
-                    a = aa[0] + 90+cc[ml] + Math.idiv((cc[tmp_cnt] - cc[ml]) , 2)
+                    c = aa[0] + 90+aa[ml] + Math.idiv((aa[tmp_cnt] - aa[ml]) * (il + 1) , count)
+                    b = aa[0] + 90+bb[ml] + Math.idiv((bb[tmp_cnt] - bb[ml]) * (il + 1) , count)
+                    a = aa[0] + 90+cc[ml] + Math.idiv((cc[tmp_cnt] - cc[ml]) * (il + 1) , count)
                     s90(3,c)
                     s90(1,b)
                     s90(0,a)
-                    y = aa[0] + 90+dd[ml]+Math.idiv((dd[tmp_cnt] - dd[ml])  , 2)
-                    basic.pause(50)
-                    tmp_cnt = ml + 1
-                    c = aa[0] + 90+aa[ml] + Math.idiv((aa[tmp_cnt] - aa[ml]) * 2 , 2)
-                    b = aa[0] + 90+bb[ml] + Math.idiv((bb[tmp_cnt] - bb[ml]) * 2 , 2)
-                    a = aa[0] + 90+cc[ml] + Math.idiv((cc[tmp_cnt] - cc[ml]) * 2 , 2)
-                    s90(3,c)
-                    s90(1,b)
-                    s90(0,a)
-                    y = aa[0] + 90+dd[ml]+Math.idiv((dd[tmp_cnt] - dd[ml]) * 2 , 2)
-                    basic.pause(50)
+                    y = aa[0] + 90+dd[ml]+Math.idiv((dd[tmp_cnt] - dd[ml]) * (il + 1) , count)
+                    basic.pause(10)
+                }
             }
-                   c = aa[0] + 90+Math.idiv(aa[1] , 2)
-                    b = aa[0] + 90+bb[0]+Math.idiv((bb[1]-bb[0]) , 2)
-                    a = aa[0] + 90+cc[0]+Math.idiv((cc[1]-cc[0]) , 2)
+        }	 
+                for (let il = 0; il <= count - 1; il++) {
+                    c = aa[0] + 90+Math.idiv((0- aa[0]) * (il + 1) , count)
+                    b = aa[0] + 90+bb[0] +Math.idiv((0) * (il + 1) , count)
+                    a = aa[0] + 90+cc[0] +Math.idiv((0- aa[0]-cc[0]) * (il + 1) , count)
                     s90(3,c)
                     s90(1,b)
                     s90(0,a)
-                    y = aa[0] + 90+dd[0]+Math.idiv(dd[1] , count)
-                   basic.pause(50)
-                    c = aa[0] + 90+Math.idiv(aa[1] * 2 , 2)
-                    b = aa[0] + 90+bb[0]+Math.idiv((bb[1]-bb[0]) * 2 , 2)
-                    a = aa[0] + 90+cc[0]+Math.idiv((cc[1]-cc[0]) * 2 , 2)
-                    s90(3,c)
-                    s90(1,b)
-                    s90(0,a)
-                    y = aa[0] + 90+dd[0]+Math.idiv(dd[1] * 2 , count)
-                   basic.pause(50)
-            for (let ml = 1; ml <= m_step - 3; ml++) {
-                    tmp_cnt = ml + 1
-                    c = aa[0] + 90+aa[ml] + Math.idiv((aa[tmp_cnt] - aa[ml]) , 2)
-                    b = aa[0] + 90+bb[ml] + Math.idiv((bb[tmp_cnt] - bb[ml]) , 2)
-                    a = aa[0] + 90+cc[ml] + Math.idiv((cc[tmp_cnt] - cc[ml]) , 2)
-                    s90(3,c)
-                    s90(1,b)
-                    s90(0,a)
-                    y = aa[0] + 90+dd[ml]+Math.idiv((dd[tmp_cnt] - dd[ml])  , 2)
-                    basic.pause(50)
-                    tmp_cnt = ml + 1
-                    c = aa[0] + 90+aa[ml] + Math.idiv((aa[tmp_cnt] - aa[ml]) * 2 , 2)
-                    b = aa[0] + 90+bb[ml] + Math.idiv((bb[tmp_cnt] - bb[ml]) * 2 , 2)
-                    a = aa[0] + 90+cc[ml] + Math.idiv((cc[tmp_cnt] - cc[ml]) * 2 , 2)
-                    s90(3,c)
-                    s90(1,b)
-                    s90(0,a)
-                    y = aa[0] + 90+dd[ml]+Math.idiv((dd[tmp_cnt] - dd[ml]) * 2 , 2)
-                    basic.pause(50)
-            }
-                   c = aa[0] + 90+Math.idiv(aa[1] , 2)
-                    b = aa[0] + 90+bb[0]+Math.idiv((bb[1]-bb[0]) , 2)
-                    a = aa[0] + 90+cc[0]+Math.idiv((cc[1]-cc[0]) , 2)
-                    s90(3,c)
-                    s90(1,b)
-                    s90(0,a)
-                    y = aa[0] + 90+dd[0]+Math.idiv(dd[1] , count)
-                   basic.pause(50)
-                    c = aa[0] + 90+Math.idiv(aa[1] * 2 , 2)
-                    b = aa[0] + 90+bb[0]+Math.idiv((bb[1]-bb[0]) * 2 , 2)
-                    a = aa[0] + 90+cc[0]+Math.idiv((cc[1]-cc[0]) * 2 , 2)
-                    s90(3,c)
-                    s90(1,b)
-                    s90(0,a)
-                    y = aa[0] + 90+dd[0]+Math.idiv(dd[1] * 2 , count)
-                   basic.pause(50)
-            for (let ml = 1; ml <= m_step - 3; ml++) {
-                    tmp_cnt = ml + 1
-                    c = aa[0] + 90+aa[ml] + Math.idiv((aa[tmp_cnt] - aa[ml]) , 2)
-                    b = aa[0] + 90+bb[ml] + Math.idiv((bb[tmp_cnt] - bb[ml]) , 2)
-                    a = aa[0] + 90+cc[ml] + Math.idiv((cc[tmp_cnt] - cc[ml]) , 2)
-                    s90(3,c)
-                    s90(1,b)
-                    s90(0,a)
-                    y = aa[0] + 90+dd[ml]+Math.idiv((dd[tmp_cnt] - dd[ml])  , 2)
-                    basic.pause(50)
-                    tmp_cnt = ml + 1
-                    c = aa[0] + 90+aa[ml] + Math.idiv((aa[tmp_cnt] - aa[ml]) * 2 , 2)
-                    b = aa[0] + 90+bb[ml] + Math.idiv((bb[tmp_cnt] - bb[ml]) * 2 , 2)
-                    a = aa[0] + 90+cc[ml] + Math.idiv((cc[tmp_cnt] - cc[ml]) * 2 , 2)
-                    s90(3,c)
-                    s90(1,b)
-                    s90(0,a)
-                    y = aa[0] + 90+dd[ml]+Math.idiv((dd[tmp_cnt] - dd[ml]) * 2 , 2)
-                    basic.pause(50)
-            }
-                    c = aa[0] + 90+Math.idiv((0- aa[0])  , 2)
-                    b = bb[0] + 90+Math.idiv((0- bb[0])  , 2)
-                    a = cc[0] + 90+Math.idiv((0- cc[0])  , 2)
-                    s90(3,c)
-                    s90(1,b)
-                    s90(0,a)
-                    y = aa[0] + 90+Math.idiv((0- dd[0]) * 2 , 2)
-                    basic.pause(50)
-                    c = aa[0] + 90+Math.idiv((0- aa[0]) * 2 , 2)
-                    b = bb[0] + 90+Math.idiv((0- bb[0]) * 2 , 2)
-                    a = cc[0] + 90+Math.idiv((0- cc[0]) * 2 , 2)
-                    s90(3,c)
-                    s90(1,b)
-                    s90(0,a)
-                    y = aa[0] + 90+Math.idiv((0- dd[0]) * 2 , 2)
-                    basic.pause(50)
+                    y = aa[0] + 90+Math.idiv((0- dd[0]) * (il + 1) , count)
+                    basic.pause(10)
+                }
                run_s = 0
       }
    }
   
+   function srun(aa: number[], bb: number[],cc: number[],dd: number[],ll: number): void {
+      if (run_s == 0) {
+        run_s = 1        
+        for (let i = 0; i < ll; i++) {
+                for (let il = 0; il <= count - 1; il++) {
+                    c = aa[0] + 90+Math.idiv(aa[1] * (il + 1) , count)
+                    b = aa[0] + 90+bb[0]+Math.idiv((bb[1]-bb[0]) * (il + 1) , count)
+                    a = aa[0] + 90+cc[0]+Math.idiv((cc[1]-cc[0]) * (il + 1) , count)
+                    s90(3,c)
+                    s90(1,b)
+                    s90(0,a)
+                    y = aa[0] + 90+dd[0]+Math.idiv(dd[1] * (il + 1) , count)
+                   basic.pause(10)
+                }
+            if (m_step >= 4) {
+               for (let ml = 1; ml <= m_step - 4; ml++) {
+                for (let il = 0; il <= count - 1; il++) {
+                    tmp_cnt = ml + 1
+                    c = aa[0] + 90+aa[ml] + Math.idiv((aa[tmp_cnt] - aa[ml]) * (il + 1) , count)
+                    b = aa[0] + 90+bb[ml] + Math.idiv((bb[tmp_cnt] - bb[ml]) * (il + 1) , count)
+                    a = aa[0] + 90+cc[ml] + Math.idiv((cc[tmp_cnt] - cc[ml]) * (il + 1) , count)
+                    s90(3,c)
+                    s90(1,b)
+                    s90(0,a)
+                    y = aa[0] + 90+dd[ml]+Math.idiv((dd[tmp_cnt] - dd[ml]) * (il + 1) , count)
+                    basic.pause(10)
+                }
+              }
+            }
+        }	 
+              run_s = 0
+      }
+   }
+ 
    /**
      * Start animation
      */
@@ -322,14 +313,25 @@ basic.showLeds(`
     /**
      * Shiun Robot basic motion extension
      */
-    //% blockId="motion" block="Default motion - |Motion %direction"
+    //% blockId="motion" block="Default motion - |Speed %speed|Motion %direction"
     //% blockGap=1 weight=80 
-  export function motion(direction: dnum): void {
+  export function motion(speed: snum, direction: dnum): void {
         
+        if (speed == snum.Fast) {
+          count = 10;
+        } else if (speed == snum.Middle) {
+          count = 20;
+        } else if (speed == snum.Slow) {
+          count = 30;
+        } else {
+          count = 5;
+        }
+
       if (direction == dnum.Stop) {
         s90(0,90)
         s90(1,90)
         s90(2,90)
+        s90(3,90)
           } else if (direction == dnum.Forward ) {
         m_step = h.length
         mrun(h,i,k,h,3)  
@@ -346,6 +348,28 @@ basic.showLeds(`
         m_step = v.length
         mrun(v,w,x,v,1)  
         } 
+     }        
+
+    /**
+     * User motion extension
+     * Input motion array P0/P1/P2 from motion editor
+     */
+    //% blockId="user_motion" block="User Motion|Speed %speed|P0 %pa|P1 %pb|P2 %pc"
+    //% blockGap=1 weight=70 blockExternalInputs=1
+  export function user_motion(speed: snum, pa:number[], pb:number[], pc:number[]): void {
+
+        if (speed == snum.Fast) {
+          count = 5;
+        } else if (speed == snum.Middle) {
+          count = 10;
+        } else if (speed == snum.Slow) {
+          count = 15;
+        } else {
+          count = 7;
+        }
+
+        m_step = pa.length
+        srun(pa,pb,pc,pb,1)  
      }        
 
 }
