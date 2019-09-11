@@ -44,6 +44,7 @@ namespace MiniPOW {
         Middle = 0,
         Fast = 1,
         Slow = 2,
+        Editor = 3, 
     }
 
     export enum dnum {
@@ -363,6 +364,8 @@ basic.showLeds(`
         } else if (speed == snum.Middle) {
           count = 10;
         } else if (speed == snum.Slow) {
+          count = 15;
+        } else if (speed == snum.Editor) {
           count = 15;
         } else {
           count = 7;
