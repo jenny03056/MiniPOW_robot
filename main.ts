@@ -162,7 +162,7 @@ namespace MiniPOW {
       if (run_s == 0) {
         run_s = 1     
         if (count == 99) {
-          count = aa[m_step] /10;
+          count = aa[m_step-1] /10;
         }
         for (let i = 0; i < ll; i++) {
                 for (let il = 0; il <= count - 1; il++) {
