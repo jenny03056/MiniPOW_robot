@@ -359,6 +359,7 @@ basic.showLeds(`
     //% blockGap=1 weight=70 blockExternalInputs=1
   export function user_motion(speed: snum, pa:number[], pb:number[], pc:number[]): void {
 
+        m_step = pa.length
         if (speed == snum.Fast) {
           count = 5;
         } else if (speed == snum.Middle) {
@@ -366,12 +367,10 @@ basic.showLeds(`
         } else if (speed == snum.Slow) {
           count = 15;
         } else if (speed == snum.Editor) {
-          count = 15;
+          count = pa[m_Step]/10;;
         } else {
           count = 7;
-        }
-
-        m_step = pa.length
+        }        
         srun(pa,pb,pc,pb,1)  
      }        
 
