@@ -160,7 +160,10 @@ namespace MiniPOW {
   
    function srun(aa: number[], bb: number[],cc: number[],dd: number[],ll: number): void {
       if (run_s == 0) {
-        run_s = 1        
+        run_s = 1     
+        if (count == 99) {
+          count = aa[m_step] /10;
+        }
         for (let i = 0; i < ll; i++) {
                 for (let il = 0; il <= count - 1; il++) {
                     c = aa[0] + 90+Math.idiv(aa[1] * (il + 1) , count)
@@ -367,7 +370,7 @@ basic.showLeds(`
         } else if (speed == snum.Slow) {
           count = 15;
         } else if (speed == snum.Editor) {
-          count = Math.idiv(pa[m_Step] , 10);
+          count = 99;
         } else {
           count = 7;
         }        
