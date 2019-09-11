@@ -367,7 +367,7 @@ basic.showLeds(`
         } else if (speed == snum.Slow) {
           count = 15;
         } else if (speed == snum.Editor) {
-          count = pa[m_Step]/10;;
+          count = pa[m_Step]/10;
         } else {
           count = 7;
         }        
